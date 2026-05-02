@@ -1,17 +1,15 @@
-# netlify.toml – v5
+# netlify.toml – v7
 
 [build]
   publish = "."
   functions = "netlify/functions"
 
-# Route all API calls through the serverless function
 [[redirects]]
   from = "/.netlify/functions/*"
   to   = "/.netlify/functions/:splat"
   status = 200
 
-# Serve index-v5.html as the default page
 [[redirects]]
   from = "/"
-  to   = "/index-v5.html"
+  to   = "/index-v7.html"
   status = 200
