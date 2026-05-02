@@ -1,4 +1,4 @@
-// netlify/functions/chat.js  –  v7
+// netlify/functions/chat.js  –  v8
 // Secure proxy: keeps ANTHROPIC_API_KEY out of the browser.
 // Fetches live inventory from a published Google Sheet CSV on every conversation start.
 // Set environment variables in Netlify → Site Settings → Environment Variables:
@@ -78,10 +78,22 @@ function formatInventory(homes) {
       if (h['Amenities'])      output += ` | Amenities: ${h['Amenities']}`;
       if (h['Special Offers']) output += ` | Offer: ${h['Special Offers']}`;
       if (h['Listing URL'])    output += ` | URL: ${h['Listing URL']}`;
+      if (h['Photo URL'])      output += ` | Photo: ${h['Photo URL']}`;
       output += '\n';
     });
   });
-  output += '\nPresent 1-2 homes at a time conversationally. Filter to the visitor\'s area and needs.';
+  output += `
+PROPERTY CARD INSTRUCTIONS — critical, follow exactly:
+When you mention 1 or 2 specific communities to a visitor, you MUST append a JSON block at the very end of your reply to trigger property cards in the UI. The JSON must appear after your conversational text, on its own line, in this exact format with no markdown or backticks:
+
+CARDS::[{"name":"Community Name","city":"City","series":"Series","priceFrom":299900,"priceTo":364900,"bedrooms":"3","sqftFrom":1500,"sqftTo":1900,"amenities":"Pool, trails","status":"Available","listingUrl":"https://...","photoUrl":"https://...","specialOffer":"..."}]
+
+Rules for the CARDS block:
+- Only include it when you are actively presenting specific homes to the visitor
+- Include all fields; use empty string "" for any missing values
+- Numbers (priceFrom, priceTo, sqftFrom, sqftTo) must be plain integers with no commas or symbols
+- Always place CARDS:: on its own line at the very end of the message
+- Never mention the CARDS block in your conversational text`;
   return output;
 }
 
@@ -123,7 +135,7 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         model:      'claude-sonnet-4-20250514',
-        max_tokens: 120,
+        max_tokens: 400,
         system:     systemPrompt,
         messages,
       }),
