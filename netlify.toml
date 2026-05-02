@@ -1,4 +1,4 @@
-# netlify.toml – v1
+# netlify.toml – v2
 
 [build]
   publish = "."
@@ -10,8 +10,8 @@
   to   = "/.netlify/functions/:splat"
   status = 200
 
-# Serve index-v1.html as the default page
+# Serve index-v2.html as the default page
 [[redirects]]
   from = "/"
-  to   = "/index-v1.html"
+  to   = "/index-v2.html"
   status = 200
