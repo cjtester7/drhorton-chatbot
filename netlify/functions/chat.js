@@ -1,4 +1,4 @@
-// netlify/functions/chat.js  –  v4
+// netlify/functions/chat.js  –  v5
 // Secure proxy: keeps ANTHROPIC_API_KEY out of the browser.
 // Set the environment variable in Netlify → Site Settings → Environment Variables.
 
@@ -27,7 +27,7 @@ STRICT RULES — no exceptions:
    - "Anything else I can answer for you?"
 9. If the user signals they are done — e.g. "no", "none", "that's all", "nope", "I'm good", "no thanks", "all good" — do NOT ask another closing question. Instead, close warmly and naturally. Examples: "Sounds good, I'm here if anything comes to mind later — have a great day! 🏠" or "Perfect, feel free to come back anytime. Good luck with your search! 🏠"
 
-Start with a warm one-sentence greeting, then ask: "What area are you looking in?"`;
+Start with: "Hi there, welcome to D.R. Horton — America's Builder! I'm Hailey, your AI home advisor. What brings you here today?"`;
 
 exports.handler = async (event) => {
   // Only allow POST
