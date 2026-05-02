@@ -1,0 +1,17 @@
+# netlify.toml – v1
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Route all API calls through the serverless function
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to   = "/.netlify/functions/:splat"
+  status = 200
+
+# Serve index-v1.html as the default page
+[[redirects]]
+  from = "/"
+  to   = "/index-v1.html"
+  status = 200
