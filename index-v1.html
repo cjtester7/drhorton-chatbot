@@ -184,11 +184,57 @@
       box-shadow: 0 4px 16px rgba(200,16,46,0.3);
     }
 
+    /* ── Thinking indicator ── */
     #typing-row { display: none; }
-    .typing-dots { display: flex; gap: 5px; align-items: center; padding: 4px 0; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: #c8102e; animation: bounce 1.2s infinite; }
-    .dot:nth-child(2) { animation-delay: 0.2s; }
-    .dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes thinking-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.35; }
+      50%       { transform: scale(1.55); opacity: 1; }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    @keyframes hailey-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .thinking-bubble {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 16px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(200,16,46,0.3);
+      border-radius: 18px 18px 18px 4px;
+    }
+    .thinking-spinner {
+      width: 16px; height: 16px; flex-shrink: 0;
+      border: 2px solid rgba(200,16,46,0.2);
+      border-top-color: #c8102e;
+      border-radius: 50%;
+      animation: hailey-spin 0.75s linear infinite;
+    }
+    .thinking-text {
+      font-size: 12px; font-weight: 400; letter-spacing: 0.4px;
+      background: linear-gradient(90deg,
+        rgba(255,255,255,0.3) 0%,
+        #ffffff 30%,
+        rgba(200,16,46,0.9) 50%,
+        #ffffff 70%,
+        rgba(255,255,255,0.3) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 1.8s linear infinite;
+      white-space: nowrap;
+    }
+    .thinking-dots { display: flex; gap: 4px; align-items: center; margin-left: 2px; }
+    .tdot {
+      width: 5px; height: 5px; border-radius: 50%; background: #c8102e;
+      animation: thinking-pulse 1.1s ease-in-out infinite;
+    }
+    .tdot:nth-child(2) { animation-delay: 0.18s; }
+    .tdot:nth-child(3) { animation-delay: 0.36s; }
 
     #suggestions { display: none; flex-wrap: wrap; gap: 7px; padding-left: 44px; }
     .chip {
@@ -269,9 +315,13 @@
 
     <div id="typing-row" class="msg-row">
       <div class="avatar bot">H</div>
-      <div class="bubble bot">
-        <div class="typing-dots">
-          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="thinking-bubble">
+        <div class="thinking-spinner"></div>
+        <span class="thinking-text">Hailey is thinking</span>
+        <div class="thinking-dots">
+          <div class="tdot"></div>
+          <div class="tdot"></div>
+          <div class="tdot"></div>
         </div>
       </div>
     </div>
@@ -322,8 +372,17 @@
   }
 
   function showTyping(show) {
-    document.getElementById('typing-row').style.display = show ? 'flex' : 'none';
-    if (show) scrollToBottom();
+    const row    = document.getElementById('typing-row');
+    const anchor = document.getElementById('scroll-anchor');
+    const msgs   = document.getElementById('messages');
+    if (show) {
+      // Always move the typing row to just before the scroll anchor so it's at the bottom
+      msgs.insertBefore(row, anchor);
+      row.style.display = 'flex';
+      anchor.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      row.style.display = 'none';
+    }
   }
 
   function addMessage(role, content) {
