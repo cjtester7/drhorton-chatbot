@@ -1,4 +1,4 @@
-# netlify.toml – v7
+# netlify.toml – v8
 
 [build]
   publish = "."
@@ -11,5 +11,5 @@
 
 [[redirects]]
   from = "/"
-  to   = "/index-v7.html"
+  to   = "/index-v8.html"
   status = 200
