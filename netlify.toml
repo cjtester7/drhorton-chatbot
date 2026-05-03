@@ -1,6 +1,7 @@
-# netlify.toml | v10 | CR010 - Points to index-v10.html
-# netlify.toml | v10 | CR008 - Points to index-v10.html
-# netlify.toml – v10
+# netlify.toml | v11 | CR011 - Points to index-v11.html
+# netlify.toml | v11 | CR010 - Points to index-v11.html
+# netlify.toml | v11 | CR008 - Points to index-v11.html
+# netlify.toml – v11
 
 [build]
   publish = "."
@@ -13,5 +14,5 @@
 
 [[redirects]]
   from = "/"
-  to   = "/index-v10.html"
+  to   = "/index-v11.html"
   status = 200
