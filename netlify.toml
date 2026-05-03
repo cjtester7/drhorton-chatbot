@@ -1,4 +1,5 @@
-# netlify.toml – v6
+# netlify.toml | v9 | CR008 - Points to index-v9.html
+# netlify.toml – v9
 
 [build]
   publish = "."
@@ -11,5 +12,5 @@
 
 [[redirects]]
   from = "/"
-  to   = "/index-v6.html"
+  to   = "/index-v9.html"
   status = 200
